@@ -4,10 +4,12 @@ DELIMITER $$
 
 -- Write Trigger
 CREATE TRIGGER reduce_items
-BEFORE INSERT ON items
+BEFORE INSERT ON orders
 FOR EACH ROW
 BEGIN
-SET NEW.quantity = NEW.quantity - 1;
+UPDATE items
+SET quantity = quantity - NEW.number
+WHERE name = NEW.item_name;
 END$$
 
 -- reset delimeter
