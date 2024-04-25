@@ -6,7 +6,7 @@ DELIMITER $$
 CREATE PROCEDURE AddBonus(IN user_id INT, IN project_name VARCHAR(255), IN score INT)
 BEGIN
 	-- Check if the project_name is not in project table
-	IF project_name NOT IN (`projects`.name) THEN
+	IF project_name NOT IN (SELECT name FROM projects) THEN
 		INSERT INTO projects(name) VALUES (project_name);
 	END IF;
 	-- Insert into the corrections table respectively.

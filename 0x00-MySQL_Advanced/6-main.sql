@@ -13,6 +13,6 @@ CALL AddBonus((SELECT id FROM users WHERE name = "Jeanne"), "New bonus", 90);
 
 SELECT "--";
 
--- SELECT * FROM projects;
+SELECT * FROM projects;
 SELECT * FROM corrections;
 
