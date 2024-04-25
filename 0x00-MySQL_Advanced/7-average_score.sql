@@ -14,8 +14,7 @@ BEGIN
 
 	-- Select the average from the corrections tabel into declared value
 	SELECT AVG(score) INTO avg_score FROM corrections
-	WHERE user_id = new_user_id
-	GROUP BY user_id;
+	WHERE corrections.user_id = new_user_id;
 
 	-- Update the avergage score into the users table
 	UPDATE users SET average_score = avg_score
