@@ -2,6 +2,11 @@
 -- change delimeter
 DELIMITER $$
 
+-- DROP PROCEDURES IF EXISTS
+DROP PROCEDURE IF EXISTS ComputeAverageWeightedScoreForUser;
+DROP PROCEDURE IF EXISTS ComputeAverageWeightedScoreForUsers;
+
+
 -- CREATE PROCEDURE FOR CALCULATING WEIGHTED AVERAGE
 CREATE PROCEDURE ComputeAverageWeightedScoreForUser (IN user_id INT)
 BEGIN
@@ -24,7 +29,8 @@ END$$
 CREATE PROCEDURE ComputeAverageWeightedScoreForUsers ()
 BEGIN
 	-- Declare integers for holding cursor and markingcontinue handler
-	DECLARE a,b INT;
+	DECLARE a INT;
+	DECLARE b INT DEFAULT 0;
 
 	-- Declare Cursor from select statement
 	DECLARE cur_1 CURSOR FOR
@@ -33,15 +39,17 @@ BEGIN
 	-- Declare Continue handler when cursor reaches end.
 	DECLARE CONTINUE HANDLER FOR NOT FOUND SET b = 1;
 
-	--Open Cursor
+	-- Open Cursor
 	OPEN cur_1;
 
 	-- Start looping through cursor
-	REPEAT
-	FETCH cur_1 INTO a;   /* Fetch each loop id into a */
-	CALL ComputeAverageWeightedScoreForUser(a); /* Call Procedure above for each id.*/
-	UNTIL b = 1
-	END REPEAT;
+	process_id: LOOP
+		IF b = 1 THEN
+			LEAVE process_id;
+		END IF;
+		FETCH cur_1 INTO a;   /* Fetch each loop id into a */
+		CALL ComputeAverageWeightedScoreForUser(a); /* Call Procedure above for each id.*/
+	END LOOP;
 	CLOSE cur_1;
 END$$
 
