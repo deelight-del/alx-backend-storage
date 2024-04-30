@@ -22,10 +22,11 @@ if __name__ == "__main__":
     }
     # instantiate status checks to be zero
     status_checks = 0
-    # Loop through documents in nginx collection, and adjust method dict as necessary
+    # Loop through documents in nginx collection
+    # and adjust method dict as necessary.
     for d in nginx.find():
         methods_dict[d.method] += 1
-        status_checks += 1 if d.method == "GET" and d.path == "\status"
+        status_checks += 1 if d.method == "GET" and d.path == "\\status"
     print("Methods:")
     [
         print(f"\tmethod {k}: {methods_dict[k]}")
