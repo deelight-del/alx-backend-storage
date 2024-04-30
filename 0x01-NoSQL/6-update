@@ -1,5 +1,5 @@
 // Update several documents in a collection at once.
 
-db.school.updateMany( {"name": "Holberton School" },
+db.school.updateMany( {"name": "Holberton school" },
     { "$set": {"address": "972 Mission street"} }
 )
