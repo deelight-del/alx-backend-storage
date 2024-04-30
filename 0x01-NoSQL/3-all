@@ -1,0 +1,3 @@
+// Find/ Select all from a given collection
+
+db.school.find()
