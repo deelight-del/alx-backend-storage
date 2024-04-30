@@ -1,0 +1,3 @@
+// MongoSh command to list all db
+
+show dbs
