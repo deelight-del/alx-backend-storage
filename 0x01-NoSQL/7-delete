@@ -1,3 +1,6 @@
 // Delete by march
 
-db.school.deleteMany( {...} )
+db.school.delete(
+  {"name": "Holberton school"},
+  {"multi": true}
+  )
