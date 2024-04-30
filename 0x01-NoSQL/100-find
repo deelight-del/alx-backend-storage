@@ -1,0 +1,3 @@
+//script that uses regex to find some documents
+
+db.school.find({"name": /^Holberton.*$/})
