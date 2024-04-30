@@ -1,4 +1,4 @@
-#/usr/bin/env python3
+#!/usr/bin/env python3
 """Python Script that is used for printing out log
 data"""
 
