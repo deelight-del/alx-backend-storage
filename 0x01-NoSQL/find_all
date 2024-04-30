@@ -1,0 +1,3 @@
+// Find documents with filter
+
+db.school.find()
