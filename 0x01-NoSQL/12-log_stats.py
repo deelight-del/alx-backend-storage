@@ -26,7 +26,8 @@ if __name__ == "__main__":
     # and adjust method dict as necessary.
     for d in nginx.find():
         methods_dict[d.method] += 1
-        status_checks += 1 if d.method == "GET" and d.path == "\\status"
+        if d.method == "GET" and d.path == "\\status":
+            status_checks += 1
     print("Methods:")
     [
         print(f"\tmethod {k}: {methods_dict[k]}")
