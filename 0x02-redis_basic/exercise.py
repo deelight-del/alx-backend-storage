@@ -12,10 +12,10 @@ class Cache:
     """A Cache class expected to work as a caching system"""
     def __init__(self):
         """The initialization method"""
-        self._redis = redis.Redis()
+        self._redis = redis.Redis(host='localhost', port=6379)
         self._redis.flushdb()
 
-    def store(self, data: Union[str, bytes, int, float]):
+    def store(self, data: Union[str, bytes, int, float]) -> str:
         """store method that takes a data
         argument and returns a string"""
         random_string = uuid.uuid4()
