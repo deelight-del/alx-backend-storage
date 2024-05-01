@@ -20,5 +20,4 @@ class Cache:
         argument and returns a string"""
         random_string = str(uuid.uuid4())
         self._redis.set(random_string, data)
-        self._redis.bgsave()
         return random_string
