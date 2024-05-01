@@ -21,4 +21,4 @@ class Cache:
         random_string = uuid.uuid4()
         self._redis.set(random_string, data)
         self._redis.bgsave()
-        return random_string
+        return str(random_string)
