@@ -18,7 +18,7 @@ class Cache:
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """store method that takes a data
         argument and returns a string"""
-        random_string = uuid.uuid4()
+        random_string = str(uuid.uuid4())
         self._redis.set(random_string, data)
         self._redis.bgsave()
-        return str(random_string)
+        return random_string
