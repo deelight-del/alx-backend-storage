@@ -45,6 +45,20 @@ def call_history(method: Callable) -> Callable:
     return wrapper_call_history
 
 
+def replay(method: Callable):
+    """Function that takes a callable and replays
+    the behaviour of the callable"""
+    redis_h = redis.Redis(host='localhost', port=6379)
+    qualname = method.__qualname__
+    call_count = redis_h.get(qualname)
+    print(f"{qualname} was called {call_count.decode('utf-8')} times:")
+    for inputs, outputs in zip(
+        redis_h.lrange(f"{qualname}:inputs", 0, -1),
+        redis_h.lrange(f"{qualname}:outputs", 0, -1)
+    ):
+        print(f"{qualname}(*{inputs.decode('utf-8')}) -> {outputs.decode('utf-8')}")
+
+
 class Cache:
     """A Cache class expected to work as a caching system"""
     def __init__(self):
