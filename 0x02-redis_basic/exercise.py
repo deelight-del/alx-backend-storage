@@ -16,12 +16,12 @@ def count_calls(method: Callable) -> Callable:
     # Functool wraps method to preserve ppties of wrapped function
     @functools.wraps(method)
     # Wrapper Function to increase number of times func is called
-    def wrapper_count_calls(*args, **kwargs):
+    def wrapper_count_calls(self, *args, **kwargs):
         """Inner wrapper function to modify the methods of Cache"""
         # args[0] should be ``self``
         # We then use self to access redis and increase the __qualname__
-        args[0]._redis.incr(method.__qualname__)
-        return method(*args, **kwargs)
+        self._redis.incr(method.__qualname__)
+        return method(self, *args, **kwargs)
     return wrapper_count_calls
 
 
