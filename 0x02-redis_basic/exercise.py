@@ -15,8 +15,9 @@ def count_calls(method: Callable) -> Callable:
 
     key = method.__qualname__
     # Functool wraps method to preserve ppties of wrapped function
-    @functools.wraps(method)
+
     # Wrapper Function to increase number of times func is called
+    @functools.wraps(method)
     def wrapper_count_calls(self, *args, **kwargs):
         """Inner wrapper function to modify the methods of Cache"""
         # args[0] should be ``self``
@@ -26,6 +27,24 @@ def count_calls(method: Callable) -> Callable:
     return wrapper_count_calls
 
 
+def call_history(method: Callable):
+    """Decorator to store the input and output
+    history of the calls into a redis list"""
+    # Create the namespaces for input and output key.
+    input_key = f"{method.__qualname__}:inputs"
+    output_key = f"{method.__qualname__}:outputs"
+
+    # Preserve method meta properties.
+    @functools.wraps(method)
+    def wrapper_call_history(self, *args, **kwargs):
+        """Wrapper function to manipulate the method"""
+        self._redis.rpush(input_key, str(args))
+        output = method(self, *args, **kwargs)
+        self._redis.rpush(output_key, str(output))
+        return output
+    return wrapper_call_history
+
+
 class Cache:
     """A Cache class expected to work as a caching system"""
     def __init__(self):
@@ -33,6 +52,7 @@ class Cache:
         self._redis = redis.Redis(host='localhost', port=6379)
         self._redis.flushdb()
 
+    @call_history
     @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """store method that takes a data
