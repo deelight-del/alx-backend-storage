@@ -6,6 +6,23 @@ implements the redis-py package, imported as redis"""
 import redis
 import uuid
 from typing import Union, Callable, Any, Optional
+import functools
+
+
+def count_calls(method: Callable) -> Callable:
+    """A decorator function that counts number of times
+    that a method has been called"""
+
+    # Functool wraps method to preserve ppties of wrapped function
+    @functools.wraps(method)
+    # Wrapper Function to increase number of times func is called
+    def wrapper_count_calls(*args, **kwargs):
+        """Inner wrapper function to modify the methods of Cache"""
+        # args[0] should be ``self``
+        # We then use self to access redis and increase the __qualname__
+        args[0]._redis.incr(wrapper_count_calls.__qualname__)
+        return method(*args, **kwargs)
+    return wrapper_count_calls
 
 
 class Cache:
@@ -23,7 +40,7 @@ class Cache:
         return random_string
 
     def get(self, key: str,
-            fn: Optional[Callable[[bytes], Optional[Any]]] = None) -> Optional[Any]:
+            fn: Optional[Callable] = None) -> Optional[Any]:
         """Defining the get method."""
         if self._redis.get(key) is not None:
             return (
