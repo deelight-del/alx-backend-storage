@@ -56,7 +56,13 @@ def replay(method: Callable):
         redis_h.lrange(f"{qualname}:inputs", 0, -1),
         redis_h.lrange(f"{qualname}:outputs", 0, -1)
     ):
-        print(f"{qualname}(*{inputs.decode('utf-8')}) -> {outputs.decode('utf-8')}")
+        print(
+            """{}(*{}) -> {}""".format(
+                qualname,
+                inputs.decode('utf-8'),
+                outputs.decode('utf-8')
+            )
+        )
 
 
 class Cache:
