@@ -20,7 +20,7 @@ def count_calls(method: Callable) -> Callable:
         """Inner wrapper function to modify the methods of Cache"""
         # args[0] should be ``self``
         # We then use self to access redis and increase the __qualname__
-        args[0]._redis.incr(wrapper_count_calls.__qualname__)
+        args[0]._redis.incr(method.__qualname__)
         return method(*args, **kwargs)
     return wrapper_count_calls
 
