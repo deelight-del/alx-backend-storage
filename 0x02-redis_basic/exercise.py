@@ -27,7 +27,7 @@ def count_calls(method: Callable) -> Callable:
     return wrapper_count_calls
 
 
-def call_history(method: Callable):
+def call_history(method: Callable) -> Callable:
     """Decorator to store the input and output
     history of the calls into a redis list"""
     # Create the namespaces for input and output key.
