@@ -22,7 +22,7 @@ def decorator(func: Callable) -> Callable:
         key = f"count:{url}"
         [
             redis_h.setex(key, 10, 1) if redis_h.get(key) is None
-            else redis_h.setex(key, 10, int(redis_h.get(key)) + 1)
+            else redis_h.set(key, int(redis_h.get(key)) + 1)
          ]
         return func(url)
     return wrapper
